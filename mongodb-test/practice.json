@@ -1,0 +1,62 @@
+{
+  "inventoryData": {
+    "item": "canvas",
+    "qty": 100,
+    "tags": ["cotton"],
+    "size": { "h": 28, "w": 35.5, "uom": "cm" }
+  },
+  "inventoryDatas": [
+    {
+      "item": "journal",
+      "qty": 25,
+      "size": { "h": 14, "w": 21, "uom": "cm" },
+      "status": "A"
+    },
+    {
+      "item": "notebook",
+      "qty": 50,
+      "size": { "h": 8.5, "w": 11, "uom": "in" },
+      "status": "B"
+    },
+    {
+      "item": "paper",
+      "qty": 100,
+      "size": { "h": 8.5, "w": 11, "uom": "in" },
+      "status": "D"
+    },
+    {
+      "item": "planner",
+      "qty": 20,
+      "size": { "h": 22.85, "w": 30, "uom": "cm" },
+      "status": "D"
+    },
+    {
+      "item": "postcard",
+      "qty": 45,
+      "size": { "h": 10, "w": 15.25, "uom": "cm" },
+      "status": "A"
+    }
+  ],
+  "studentDatas": [
+    {
+      "_id": 1,
+      "test1": 95,
+      "test2": 92,
+      "test3": 90,
+      "modified": "Sun Jan 05 2020 00:00:00 GMT+0900 (한국 표준시)"
+    },
+    {
+      "_id": 2,
+      "test1": 98,
+      "test2": 100,
+      "test3": 102,
+      "modified": "Sun Jan 05 2020 00:00:00 GMT+0900 (한국 표준시)"
+    },
+    {
+      "_id": 3,
+      "test1": 95,
+      "test2": 110,
+      "modified": "Sat Jan 04 2020 00:00:00 GMT+0900 (한국 표준시)"
+    }
+  ]
+}
