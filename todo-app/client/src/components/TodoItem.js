@@ -1,19 +1,33 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { useUpdateTodoMutation } from '../hooks/apis/useUpdateTodo';
+import { useDeleteTodoMutation } from '../hooks/apis/useDeleteTodo';
 
-const TodoItem = ({ item, onDelete, onUpdate }) => {
-	const { _id, todo, isComplete } = item;
-
+const TodoItem = ({ item }) => {
+	const { _id: id, todo, isComplete } = item;
+	const { mutate: deleteTodo } = useDeleteTodoMutation();
+	const { mutate: updateTodo } = useUpdateTodoMutation();
+	console.log(`todo: ${todo}, isComplete: ${isComplete}`);
 	return (
 		<Row>
 			<Col xs={12}>
-				<div className={`todo-item`}>
+				<div className={`todo-item`} style={isComplete ? { background: '#dcdcdc', color: 'white' } : {}}>
 					<div className='todo-content'>{todo}</div>
 					<div>
-						<button className='button-delete' onClick={() => onDelete(_id)}>
+						<button
+							className='button-delete'
+							onClick={() => {
+								deleteTodo(id);
+							}}
+						>
 							삭제
 						</button>
-						<button className='button-delete' onClick={() => onUpdate(_id, isComplete)}>
+						<button
+							className='button-delete'
+							onClick={() => {
+								updateTodo({ id, isComplete });
+							}}
+						>
 							끝남
 						</button>
 					</div>

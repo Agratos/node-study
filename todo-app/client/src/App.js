@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -7,48 +7,18 @@ import TodoBoard from './components/TodoBoard';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import api from './utils/api';
+
+import { useCreateTodoMutation } from './hooks/apis/useCreateTodo';
+import { useGetTodosQuery } from './hooks/apis/useGetTodos';
 
 function App() {
-	const [todoList, setTodoList] = useState([]);
 	const [inputValue, setInputValue] = useState('');
+	const { data } = useGetTodosQuery();
+	const { mutate: createTodo } = useCreateTodoMutation();
 
-	useEffect(() => {
-		getTodoList();
-	}, []);
-
-	const getTodoList = async () => {
-		const response = await api.get('/todos');
-		setTodoList(response.data.data);
-	};
-
-	const onCreate = async () => {
-		const response = await api.post('/todos', {
-			todo: inputValue,
-			isComplete: false,
-		});
-		console.log('response: ', response);
-		handleResponse(response);
-	};
-
-	const onDelete = async (id) => {
-		const response = await api.delete(`/todos/${id}`);
-		handleResponse(response);
-	};
-
-	const onUpdate = async (id, isComplete) => {
-		const response = await api.patch(`/todos/${id}`, { isComplete: !isComplete });
-		handleResponse(response);
-	};
-
-	const handleResponse = (response) => {
-		console.log(response);
-		if (response.statusText === 'ok') {
-			console.log('??????');
-			getTodoList();
-		} else {
-			console.log(response.error);
-		}
+	const handleCreateTodo = () => {
+		if (inputValue) createTodo({ todo: inputValue, isComplete: false });
+		setInputValue('');
 	};
 
 	return (
@@ -59,16 +29,17 @@ function App() {
 						type='text'
 						placeholder='할일을 입력하세요'
 						className='input-box'
+						value={inputValue}
 						onChange={(e) => setInputValue(e.target.value)}
 					/>
 				</Col>
 				<Col xs={12} sm={2}>
-					<button className='button-add' onClick={onCreate}>
+					<button className='button-add' onClick={handleCreateTodo}>
 						추가
 					</button>
 				</Col>
 			</Row>
-			<TodoBoard todoList={todoList} getTodoList={getTodoList} onDelete={onDelete} onUpdate={onUpdate} />
+			<TodoBoard todoList={data} />
 		</Container>
 	);
 }
