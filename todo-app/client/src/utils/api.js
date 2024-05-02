@@ -12,6 +12,7 @@ const api = axios.create({
  */
 api.interceptors.request.use(
 	(request) => {
+		console.log('Request', request);
 		return request;
 	},
 	function (error) {
@@ -21,6 +22,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
 	(response) => {
+		console.log('response', response);
 		return response;
 	},
 	function (error) {
