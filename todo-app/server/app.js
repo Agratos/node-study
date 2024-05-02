@@ -1,16 +1,27 @@
-const exporess = require('express');
+const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const indexRouter = require('./routes/index');
-const app = exporess();
+const app = express();
 
 require('dotenv').config();
 
-app.use(cors());
+app.use(
+	cors({
+		origin: '*',
+	})
+);
 app.use(bodyParser.json());
-app.use('/api', indexRouter);
+app.use(
+	'/api',
+	(req, res, next) => {
+		console.log('Received a request from:', req.origin);
+		next();
+	},
+	indexRouter
+);
 
 const mongoURL = process.env.MONGODB_URI;
 
