@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { useUpdateTodoMutation } from '../hooks/apis/useUpdateTodo';
-import { useDeleteTodoMutation } from '../hooks/apis/useDeleteTodo';
+import { useUpdateTodoMutation } from '../hooks/apis/todo/useUpdateTodo';
+import { useDeleteTodoMutation } from '../hooks/apis/todo/useDeleteTodo';
 
 const TodoItem = ({ item }) => {
 	const { _id: id, todo, isComplete } = item;

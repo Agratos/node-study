@@ -1,46 +1,18 @@
-import { useState } from 'react';
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import TodoBoard from './components/TodoBoard';
-
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-
-import { useCreateTodoMutation } from './hooks/apis/useCreateTodo';
-import { useGetTodosQuery } from './hooks/apis/useGetTodos';
+import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import TodoPage from './pages/TodoPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
-	const [inputValue, setInputValue] = useState('');
-	const { data } = useGetTodosQuery();
-	const { mutate: createTodo } = useCreateTodoMutation();
-
-	const handleCreateTodo = () => {
-		if (inputValue) createTodo({ todo: inputValue, isComplete: false });
-		setInputValue('');
-	};
-
 	return (
-		<Container>
-			<Row className='add-item-row'>
-				<Col xs={12} sm={10}>
-					<input
-						type='text'
-						placeholder='할일을 입력하세요'
-						className='input-box'
-						value={inputValue}
-						onChange={(e) => setInputValue(e.target.value)}
-					/>
-				</Col>
-				<Col xs={12} sm={2}>
-					<button className='button-add' onClick={handleCreateTodo}>
-						추가
-					</button>
-				</Col>
-			</Row>
-			<TodoBoard todoList={data} />
-		</Container>
+		<Routes>
+			<Route path='/' element={<TodoPage />} />
+			<Route path='/register' element={<RegisterPage />} />
+
+			<Route path='/login' element={<LoginPage />} />
+		</Routes>
 	);
 }
 
