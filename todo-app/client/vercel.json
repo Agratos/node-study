@@ -1,0 +1,5 @@
+{
+	"redirects": [
+		{ "source": "/api/:path", "destination": "http://todo-test.ap-northeast-2.elasticbeanstalk.com/api/:path" }
+	]
+}
