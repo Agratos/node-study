@@ -2,10 +2,7 @@
 	"routes": [
 		{
 			"src": "/api/(.*)",
-			"dest": "https://todo-test.ap-northeast-2.elasticbeanstalk.com/api/$1",
-			"headers": {
-				"Host": "todo-test.ap-northeast-2.elasticbeanstalk.com"
-			}
+			"dest": "http://todo-test.ap-northeast-2.elasticbeanstalk.com/api/$1"
 		}
 	]
 }
