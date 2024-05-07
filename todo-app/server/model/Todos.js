@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const Schema = mongoose.Schema;
 
 const todosSchema = Schema(
@@ -9,7 +10,11 @@ const todosSchema = Schema(
 		},
 		isComplete: {
 			type: Boolean,
+		},
+		author: {
+			type: Schema.Types.ObjectId,
 			required: true,
+			ref: 'User',
 		},
 	},
 	{

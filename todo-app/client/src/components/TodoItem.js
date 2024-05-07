@@ -7,13 +7,16 @@ const TodoItem = ({ item }) => {
 	const { _id: id, todo, isComplete } = item;
 	const { mutate: deleteTodo } = useDeleteTodoMutation();
 	const { mutate: updateTodo } = useUpdateTodoMutation();
-	console.log(`todo: ${todo}, isComplete: ${isComplete}`);
+
 	return (
 		<Row>
 			<Col xs={12}>
 				<div className={`todo-item`} style={isComplete ? { background: '#dcdcdc', color: 'white' } : {}}>
-					<div className='todo-content'>{todo}</div>
-					<div>
+					<div className='todo-content'>
+						<div className='content'>{todo}</div>
+						<div className='author'>by {item.author.name}</div>
+					</div>
+					<div className='todo-button'>
 						<button
 							className='button-delete'
 							onClick={() => {

@@ -19,7 +19,8 @@ const failResponse = (res, error) => {
 todoController.createTodo = async (req, res) => {
 	try {
 		const { todo, isComplete } = req.body;
-		const newTodo = new Todo({ todo, isComplete });
+		const { userId } = req;
+		const newTodo = new Todo({ todo, isComplete, author: userId });
 
 		await newTodo.save();
 
@@ -34,7 +35,7 @@ todoController.createTodo = async (req, res) => {
 
 todoController.getTodos = async (req, res) => {
 	try {
-		const todoList = await Todo.find({});
+		const todoList = await Todo.find({}).populate('author');
 
 		successResponse(res, todoList);
 	} catch (error) {

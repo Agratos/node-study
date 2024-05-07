@@ -20,7 +20,7 @@ const LoginPage = () => {
 			const response = await loginWithEmail({ email, password });
 			if (response.status === 200) {
 				sessionStorage.setItem('token', response.data.token);
-				sessionStorage.setItem('user', JSON.stringify(response.data.user));
+				console.log('token save: ', response.data.token);
 				navigate('/');
 			}
 		} catch (error) {
@@ -41,7 +41,6 @@ const LoginPage = () => {
 						onChange={(e) => setEmail(e.target.value)}
 					/>
 				</Form.Group>
-
 				<Form.Group className='mb-3' controlId='formBasicPassword'>
 					<Form.Label>Password</Form.Label>
 					<Form.Control

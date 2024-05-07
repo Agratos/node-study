@@ -1,5 +1,6 @@
 const exporess = require('express');
 const todoController = require('../controller/todo.controller');
+const authController = require('../controller/auth.controller');
 const router = exporess.Router();
 
 // create todos
@@ -7,7 +8,7 @@ const router = exporess.Router();
 // 	res.send('create todos');
 // });
 
-router.post('/', todoController.createTodo);
+router.post('/', authController.authenticate, todoController.createTodo);
 
 // get todos
 // router.get('/', (req, res) => {

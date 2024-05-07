@@ -4,15 +4,19 @@ const api = axios.create({
 	baseURL: `${process.env.REACT_APP_BACKEND_PROXY}/api`,
 	headers: {
 		'Content-Type': 'application/json',
-		authorization: 'Bearer ' + localStorage.getItem('token'),
 	},
 });
 /**
  * console.log all requests and responses
  */
+
 api.interceptors.request.use(
 	(request) => {
-		console.log('Starting Request', request);
+		//console.log('Starting Request', request.headers);
+		const token = sessionStorage.getItem('token');
+		if (token) {
+			request.headers.Authorization = `Bearer ${token}`;
+		}
 		return request;
 	},
 	function (error) {
@@ -22,7 +26,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
 	(response) => {
-		console.log('Response:', response);
+		//console.log('Response:', response);
 		return response;
 	},
 	function (error) {
