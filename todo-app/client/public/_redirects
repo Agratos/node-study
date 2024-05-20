@@ -1,1 +1,1 @@
-/api/*  http://todo-app-env.eba-2tcztu8f.ap-northeast-2.elasticbeanstalk.com/api/:splat  200
+/api/*  http://todo-test.ap-northeast-2.elasticbeanstalk.com/api/:splat  200
