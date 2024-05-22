@@ -1,5 +1,7 @@
 const bycript = require('bcryptjs');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const authController = {};
 
@@ -17,6 +19,22 @@ authController.loginWithEmail = async (req, res) => {
 		} else {
 			throw new Error('비밀번호와 이메일이 유효하지 않습니다.');
 		}
+	} catch (error) {
+		res.status(400).json({ status: 'fail', error: error.message });
+	}
+};
+
+authController.authenticate = async (req, res, next) => {
+	try {
+		const tokenString = req.headers.authorization;
+
+		if (!tokenString) throw new Error('토큰이 없습니다.');
+		const token = tokenString.replace('Bearer ', '');
+		jwt.verify(token, process.env.JWT_SECRET_KEY, (error, payload) => {
+			if (error) throw new Error('토큰이 유효하지 않습니다.');
+			req.userId = payload._id;
+		});
+		next();
 	} catch (error) {
 		res.status(400).json({ status: 'fail', error: error.message });
 	}
