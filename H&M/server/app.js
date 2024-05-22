@@ -6,6 +6,7 @@ const indexRouter = require('./routes/index');
 const app = exporess();
 
 require('dotenv').config();
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // req.body 가 객체로 인식
@@ -18,5 +19,5 @@ mongoose
 	.catch((error) => console.log('DB connection fail', error));
 
 app.listen(process.env.PORT || 5000, () => {
-	console.log('server on');
+	console.log('server on', process.env.PORT || 5000);
 });
