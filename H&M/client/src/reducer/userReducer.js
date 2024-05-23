@@ -1,6 +1,6 @@
 import * as types from '../constants/user.constants';
 const initialState = {
-	loading: true,
+	loading: false,
 	user: null,
 	loginError: '',
 	registerError: '',
@@ -30,6 +30,9 @@ function userReducer(state = initialState, action) {
 
 		case types.ERROR_RESET:
 			return { ...initialState, user: state.user };
+
+		case types.LOGOUT:
+			return { initialState };
 
 		default:
 			return { ...state };

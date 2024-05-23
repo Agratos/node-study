@@ -11,7 +11,7 @@ import { commonUiActions } from '../action/commonUiAction';
 const AppLayout = ({ children }) => {
 	const location = useLocation();
 	const dispatch = useDispatch();
-	const user = useSelector((state) => state.user);
+	const user = useSelector((state) => state.user.user);
 
 	// const { user } = useSelector((state) => state.user);
 	useEffect(() => {

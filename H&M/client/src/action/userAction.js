@@ -30,7 +30,10 @@ const loginWithEmail =
 		}
 	};
 
-const logout = () => async (dispatch) => {};
+const logout = () => async (dispatch) => {
+	dispatch({ type: types.LOGOUT });
+	sessionStorage.clear();
+};
 
 const loginWithGoogle = (token) => async (dispatch) => {};
 
