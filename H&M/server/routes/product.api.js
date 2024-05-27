@@ -8,7 +8,8 @@ router.post(
 	'/create',
 	authController.authenticate,
 	authController.checkAdminPermission,
-	productController.createProduct
+	productController.createProduct,
+	productController.getProducts
 );
 
 router.get('/', productController.getProducts);

@@ -6,10 +6,11 @@ import { commonUiActions } from './commonUiAction';
 const getProductList = (query) => async (dispatch) => {
 	try {
 		dispatch({ type: types.PRODUCT_GET_REQUEST });
-		const response = await api.get('/product');
+		const response = await api.get('/product', {
+			params: { ...query },
+		});
 		if (response.status !== 200) throw new Error(response.error);
-
-		dispatch({ type: types.PRODUCT_GET_SUCCESS, payload: response.data.data });
+		dispatch({ type: types.PRODUCT_GET_SUCCESS, payload: response.data });
 	} catch (error) {
 		dispatch({ type: types.PRODUCT_GET_FAIL, payload: error });
 	}
@@ -21,7 +22,7 @@ const createProduct = (formData) => async (dispatch) => {
 		dispatch({ type: types.PRODUCT_CREATE_REQUEST });
 		const response = await api.post('/product/create', formData);
 		if (response.status !== 200) throw new Error(response.error);
-		dispatch({ type: types.PRODUCT_CREATE_SUCCESS });
+		dispatch({ type: types.PRODUCT_CREATE_SUCCESS, payload: response.data });
 		dispatch(commonUiActions.showToastMessage('상품 생성 완료', 'success'));
 	} catch (error) {
 		dispatch({ type: types.PRODUCT_CREATE_FAIL, payload: error.error });

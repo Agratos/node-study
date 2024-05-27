@@ -9,12 +9,13 @@ import ReactPaginate from 'react-paginate';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { commonUiActions } from '../action/commonUiAction';
 import ProductTable from '../component/ProductTable';
+import LoadingSpinner from '../component/LoadingSpinner';
 
 const AdminProduct = () => {
 	const navigate = useNavigate();
 	const [query, setQuery] = useSearchParams();
 	const dispatch = useDispatch();
-	const { productList } = useSelector((state) => state.product);
+	const { productList, totalPageNum, loading } = useSelector((state) => state.product);
 	const [showDialog, setShowDialog] = useState(false);
 	const [searchQuery, setSearchQuery] = useState({
 		page: query.get('page') || 1,
@@ -23,12 +24,23 @@ const AdminProduct = () => {
 
 	const [mode, setMode] = useState('new');
 	const tableHeader = ['#', 'Sku', 'Name', 'Price', 'Stock', 'Image', 'Status', ''];
-	console.log('productList: ', productList);
+	console.log('????');
 	//상품리스트 가져오기 (url쿼리 맞춰서)
+	useEffect(() => {
+		dispatch(productActions.getProductList({ ...searchQuery }));
+	}, [query]);
 
 	useEffect(() => {
 		//검색어나 페이지가 바뀌면 url바꿔주기 (검색어또는 페이지가 바뀜 => url 바꿔줌=> url쿼리 읽어옴=> 이 쿼리값 맞춰서  상품리스트 가져오기)
-		dispatch(productActions.getProductList());
+		const isValid = /\S/.test(searchQuery.name);
+
+		if (!isValid) delete searchQuery.name;
+
+		// object를 query 형태로
+		const params = new URLSearchParams(searchQuery);
+		const query = params.toString();
+
+		navigate(`?` + query);
 	}, [searchQuery]);
 
 	const deleteItem = (id) => {
@@ -49,6 +61,7 @@ const AdminProduct = () => {
 
 	const handlePageClick = ({ selected }) => {
 		//  쿼리에 페이지값 바꿔주기
+		setSearchQuery({ ...searchQuery, page: selected + 1 });
 	};
 
 	return (
@@ -66,18 +79,21 @@ const AdminProduct = () => {
 					Add New Item +
 				</Button>
 
-				<ProductTable
-					header={tableHeader}
-					data={productList}
-					deleteItem={deleteItem}
-					openEditForm={openEditForm}
-				/>
+				<LoadingSpinner loading={loading}>
+					<ProductTable
+						header={tableHeader}
+						data={productList}
+						deleteItem={deleteItem}
+						openEditForm={openEditForm}
+					/>
+				</LoadingSpinner>
+
 				<ReactPaginate
 					nextLabel='next >'
 					onPageChange={handlePageClick}
-					pageRangeDisplayed={5}
-					pageCount={100}
-					forcePage={2} // 1페이지면 2임 여긴 한개씩 +1 해야함
+					pageRangeDisplayed={1}
+					pageCount={totalPageNum}
+					forcePage={0} // 1페이지면 2임 여긴 한개씩 +1 해야함
 					previousLabel='< previous'
 					renderOnZeroPageCount={null}
 					pageClassName='page-item'
@@ -89,9 +105,8 @@ const AdminProduct = () => {
 					//breakLabel='...'
 					breakClassName='page-item'
 					breakLinkClassName='page-link'
-					containerClassName='pagination'
+					containerClassName='pagination display-center list-style-none'
 					activeClassName='active'
-					// className='display-center list-style-none'
 				/>
 			</Container>
 
