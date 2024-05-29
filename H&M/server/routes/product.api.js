@@ -11,6 +11,12 @@ router.post(
 	productController.createProduct
 );
 router.get('/', productController.getProducts);
+router.get(
+	'/:id',
+	authController.authenticate,
+	authController.checkAdminPermission,
+	productController.getProductDetail
+);
 
 router.put('/:id', authController.authenticate, authController.checkAdminPermission, productController.updateProduct);
 router.delete(
