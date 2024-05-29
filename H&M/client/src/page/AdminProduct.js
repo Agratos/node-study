@@ -18,13 +18,14 @@ const AdminProduct = () => {
 	const { productList, totalPageNum, loading } = useSelector((state) => state.product);
 	const [showDialog, setShowDialog] = useState(false);
 	const [searchQuery, setSearchQuery] = useState({
+		pageSize: 5,
 		page: query.get('page') || 1,
 		name: query.get('name') || '',
 	}); //검색 조건들을 저장하는 객체
 
 	const [mode, setMode] = useState('new');
 	const tableHeader = ['#', 'Sku', 'Name', 'Price', 'Stock', 'Image', 'Status', ''];
-	console.log('????');
+
 	//상품리스트 가져오기 (url쿼리 맞춰서)
 	useEffect(() => {
 		dispatch(productActions.getProductList({ ...searchQuery }));
@@ -44,12 +45,16 @@ const AdminProduct = () => {
 	}, [searchQuery]);
 
 	const deleteItem = (id) => {
-		//아이템 삭제하가ㅣ
+		//아이템 삭제하기
+		dispatch(productActions.deleteProduct(id, { ...searchQuery }));
 	};
 
 	const openEditForm = (product) => {
 		//edit모드로 설정하고
 		// 아이템 수정다이얼로그 열어주기
+		setMode('edit');
+		dispatch({ type: types.SET_SELECTED_PRODUCT, payload: product });
+		setShowDialog(true);
 	};
 
 	const handleClickNewItem = () => {
@@ -91,7 +96,7 @@ const AdminProduct = () => {
 				<ReactPaginate
 					nextLabel='next >'
 					onPageChange={handlePageClick}
-					pageRangeDisplayed={1}
+					pageRangeDisplayed={searchQuery.pageSize}
 					pageCount={totalPageNum}
 					forcePage={0} // 1페이지면 2임 여긴 한개씩 +1 해야함
 					previousLabel='< previous'
@@ -110,7 +115,12 @@ const AdminProduct = () => {
 				/>
 			</Container>
 
-			<NewItemDialog mode={mode} showDialog={showDialog} setShowDialog={setShowDialog} />
+			<NewItemDialog
+				mode={mode}
+				showDialog={showDialog}
+				setShowDialog={setShowDialog}
+				searchQuery={searchQuery}
+			/>
 		</div>
 	);
 };

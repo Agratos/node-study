@@ -7,6 +7,7 @@ import { CATEGORY, STATUS, SIZE } from '../constants/product.constants';
 import '../style/adminProduct.style.css';
 import * as types from '../constants/product.constants';
 import { commonUiActions } from '../action/commonUiAction';
+import api from '../utils/api';
 
 const InitialFormData = {
 	name: '',
@@ -18,7 +19,7 @@ const InitialFormData = {
 	status: 'active',
 	price: 0,
 };
-const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
+const NewItemDialog = ({ mode, showDialog, setShowDialog, searchQuery }) => {
 	const selectedProduct = useSelector((state) => state.product.selectedProduct);
 	const { error } = useSelector((state) => state.product);
 	const [formData, setFormData] = useState(mode === 'new' ? { ...InitialFormData } : selectedProduct);
@@ -43,10 +44,18 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 		// [['M',2]] 에서 {M:2}로
 		if (mode === 'new') {
 			//새 상품 만들기
-			dispatch(productActions.createProduct({ ...formData, stock: Object.fromEntries(stock) }));
+			dispatch(
+				productActions.createProduct({ ...formData, stock: Object.fromEntries(stock) }, { ...searchQuery })
+			);
 			handleClose();
 		} else {
 			// 상품 수정하기
+			dispatch(
+				productActions.editProduct({ ...formData, stock: Object.fromEntries(stock) }, selectedProduct._id, {
+					...searchQuery,
+				})
+			);
+			handleClose();
 		}
 	};
 
@@ -108,18 +117,51 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 	};
 
 	useEffect(() => {
-		if (showDialog) {
-			if (mode === 'edit') {
-				// 선택된 데이터값 불러오기 (재고 형태 객체에서 어레이로 바꾸기)
-			} else {
-				// 초기화된 값 불러오기
+		const fetchData = async () => {
+			if (showDialog) {
+				if (mode === 'edit') {
+					setFormData({ ...selectedProduct });
+					setStock(Object.entries(selectedProduct.stock));
+				} else {
+					const getNewSku = async () => {
+						try {
+							const response = await api.get(`/product/new-sku`);
+							if (response.status !== 200) throw new Error(response.error);
+							console.log(response.data);
+							return response.data.sku; // 데이터를 반환
+						} catch (error) {
+							console.error('sku error:', error);
+						}
+					};
+
+					const newSkuData = await getNewSku();
+					if (newSkuData) {
+						setFormData({ ...InitialFormData, sku: newSkuData });
+					} else {
+						setFormData({ ...InitialFormData });
+					}
+					setStock([]);
+				}
 			}
-		}
-	}, [showDialog]);
+		};
+
+		fetchData();
+	}, [showDialog, mode, selectedProduct]);
 
 	useEffect(() => {
 		if (stock.length > 0) setStockError(false);
 	}, [stock]);
+
+	const getNewSku = async () => {
+		try {
+			const response = await api.get(`/product/new-sku`);
+			if (response.status !== 200) throw new Error(response.error);
+			return response.data; // 데이터를 반환
+		} catch (error) {
+			console.error('Error fetching new SKU:', error);
+			// 에러 처리: 예를 들어, 사용자에게 알림을 표시
+		}
+	};
 
 	//에러나면 토스트 메세지 보여주기
 
