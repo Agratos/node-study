@@ -1,0 +1,8 @@
+{
+	"routes": [
+		{
+			"src": "/api/(.*)",
+			"dest": "http://handm-env.ap-northeast-2.elasticbeanstalk.com/api/$1"
+		}
+	]
+}
