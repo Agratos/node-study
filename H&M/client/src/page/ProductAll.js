@@ -51,7 +51,7 @@ const ProductAll = () => {
 		<Container>
 			<LoadingSpinner loading={loading}>
 				<Row>
-					{productList.map((item, index) => (
+					{productList?.map((item, index) => (
 						<Col md={3} sm={12} key={item.name + index}>
 							<ProductCard item={item} />
 						</Col>
