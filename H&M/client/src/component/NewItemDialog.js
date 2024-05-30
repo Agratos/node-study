@@ -121,13 +121,12 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, searchQuery }) => {
 			if (showDialog) {
 				if (mode === 'edit') {
 					setFormData({ ...selectedProduct });
-					setStock(Object.entries(selectedProduct.stock));
+					setStock(Object.entries(selectedProduct?.stock));
 				} else {
 					const getNewSku = async () => {
 						try {
 							const response = await api.get(`/product/new-sku`);
 							if (response.status !== 200) throw new Error(response.error);
-							console.log(response.data);
 							return response.data.sku; // 데이터를 반환
 						} catch (error) {
 							console.error('sku error:', error);
@@ -135,6 +134,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, searchQuery }) => {
 					};
 
 					const newSkuData = await getNewSku();
+					console.log(`newSkuData: `, newSkuData);
 					if (newSkuData) {
 						setFormData({ ...InitialFormData, sku: newSkuData });
 					} else {
@@ -151,17 +151,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, searchQuery }) => {
 	useEffect(() => {
 		if (stock.length > 0) setStockError(false);
 	}, [stock]);
-
-	const getNewSku = async () => {
-		try {
-			const response = await api.get(`/product/new-sku`);
-			if (response.status !== 200) throw new Error(response.error);
-			return response.data; // 데이터를 반환
-		} catch (error) {
-			console.error('Error fetching new SKU:', error);
-			// 에러 처리: 예를 들어, 사용자에게 알림을 표시
-		}
-	};
 
 	//에러나면 토스트 메세지 보여주기
 

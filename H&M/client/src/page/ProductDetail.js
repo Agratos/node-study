@@ -18,7 +18,7 @@ const ProductDetail = () => {
 	const product = useSelector((state) => state.product.productDetail);
 
 	const navigate = useNavigate();
-	console.log(product);
+
 	const addItemToCart = () => {
 		//사이즈를 아직 선택안했다면 에러
 		// 아직 로그인을 안한유저라면 로그인페이지로
@@ -41,18 +41,20 @@ const ProductDetail = () => {
 		<Container className='product-detail-card'>
 			<Row>
 				<Col sm={6}>
-					<img src={product.image} className='w-100' alt='image' />
+					<img src={product?.image} className='w-100' alt='image' />
 				</Col>
 				<Col className='product-info-area' sm={6}>
-					<div className='product-info'>{product.name}</div>
-					<div className='product-info'>₩ {product.price}</div>
-					<div className='product-info'>{product.description}</div>
+					<div className='product-info'>{product?.name}</div>
+					<div className='product-info'>₩ {product?.price}</div>
+					<div className='product-info'>{product?.description}</div>
 
 					<Dropdown
 						className='drop-down size-drop-down'
 						title={size}
 						align='start'
-						onSelect={(value) => selectSize(value)}
+						onSelect={(value) => {
+							selectSize(value);
+						}}
 					>
 						<Dropdown.Toggle
 							className='size-drop-down'
@@ -64,7 +66,11 @@ const ProductDetail = () => {
 						</Dropdown.Toggle>
 
 						<Dropdown.Menu className='size-drop-down'>
-							<Dropdown.Item>M</Dropdown.Item>
+							{Object.entries(product?.stock || {})?.map((item) => (
+								<Dropdown.Item eventKey={item[0]} key={item[0]} disabled={item[1] === 0}>
+									{item[0]}
+								</Dropdown.Item>
+							))}
 						</Dropdown.Menu>
 					</Dropdown>
 					<div className='warning-message'>{sizeError && '사이즈를 선택해주세요.'}</div>

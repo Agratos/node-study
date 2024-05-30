@@ -19,6 +19,7 @@ function productReducer(state = initialState, action) {
 		case types.PRODUCT_DELETE_REQUEST:
 			return { ...state, loading: true, error: null };
 
+		case types.GET_PRODUCT_DETAIL_FAIL:
 		case types.PRODUCT_GET_FAIL:
 		case types.PRODUCT_CREATE_FAIL:
 		case types.PRODUCT_DELETE_FAIL:
@@ -33,7 +34,6 @@ function productReducer(state = initialState, action) {
 				error: null,
 			};
 
-		case types.GET_PRODUCT_DETAIL_FAIL:
 		case types.PRODUCT_CREATE_SUCCESS:
 		case types.PRODUCT_EDIT_SUCCESS:
 		case types.PRODUCT_DELETE_SUCCESS:

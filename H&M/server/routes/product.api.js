@@ -10,22 +10,22 @@ router.post(
 	authController.checkAdminPermission,
 	productController.createProduct
 );
-router.get('/', productController.getProducts);
+router.get('/new-sku', authController.authenticate, authController.checkAdminPermission, productController.getNewSku);
 router.get(
 	'/:id',
 	authController.authenticate,
 	authController.checkAdminPermission,
 	productController.getProductDetail
 );
+router.get('/', productController.getProducts);
 
 router.put('/:id', authController.authenticate, authController.checkAdminPermission, productController.updateProduct);
+
 router.delete(
 	'/:id',
 	authController.authenticate,
 	authController.checkAdminPermission,
 	productController.deleteProduct
 );
-
-router.get('/new-sku', authController.authenticate, authController.checkAdminPermission, productController.getNewSku);
 
 module.exports = router;

@@ -93,6 +93,7 @@ productController.deleteProduct = async (req, res) => {
 productController.getNewSku = async (req, res) => {
 	try {
 		const lastDocument = await Product.findOne({}, null, { sort: { _id: -1 } });
+
 		let temp = Number(lastDocument.sku.replace('sku', '')) + 1;
 		let newSku = `sku${String(temp).padStart(3, '0')}`;
 
