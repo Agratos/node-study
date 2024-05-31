@@ -11,7 +11,7 @@ import '../style/productDetail.style.css';
 
 const ProductDetail = () => {
 	const dispatch = useDispatch();
-
+	const { user } = useSelector((state) => state.user);
 	const [size, setSize] = useState('');
 	const { id } = useParams();
 	const [sizeError, setSizeError] = useState(false);
@@ -20,12 +20,17 @@ const ProductDetail = () => {
 	const navigate = useNavigate();
 
 	const addItemToCart = () => {
-		//사이즈를 아직 선택안했다면 에러
+		// 사이즈를 아직 선택안했다면 에러
 		// 아직 로그인을 안한유저라면 로그인페이지로
 		// 카트에 아이템 추가하기
+		if (size === '') return setSizeError(true);
+		if (!user) return navigate('/login');
+		dispatch(cartActions.addToCart({ id, size }));
 	};
 	const selectSize = (value) => {
 		// 사이즈 추가하기
+		setSizeError(false);
+		setSize(value);
 	};
 
 	//카트에러가 있으면 에러메세지 보여주기
