@@ -26,6 +26,7 @@ const loginWithEmail =
 			sessionStorage.setItem('token', response.data.token);
 			dispatch({ type: types.LOGIN_SUCCESS, payload: response.data });
 		} catch (error) {
+			console.log(`loginWithEmail`, error.error)
 			dispatch({ type: types.LOGIN_FAIL, payload: error.error });
 		}
 	};
