@@ -61,7 +61,7 @@ const getCartQty = () => async (dispatch) => {
 		dispatch({ type: types.GET_CART_QTY_SUCCESS, payload: response.data.data });
 	} catch (error) {
 		dispatch({ type: types.GET_CART_QTY_FAIL, payload: error.error });
-		dispatch(commonUiActions.showToastMessage(error.error, 'error'));
+		//dispatch(commonUiActions.showToastMessage(error.error, 'error'));
 	}
 }; // 몇개인지 확인 가능
 export const cartActions = {
