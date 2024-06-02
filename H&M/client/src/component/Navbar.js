@@ -10,6 +10,7 @@ import { cartActions } from '../action/cartAction';
 
 const Navbar = ({ user }) => {
 	const dispatch = useDispatch();
+	const { user } = useSelector(state => state.user); 
 	const { cartItemCount } = useSelector((state) => state.cart);
 	const isMobile = window.navigator.userAgent.indexOf('Mobile') !== -1;
 	const [showSearchBox, setShowSearchBox] = useState(false);
@@ -20,7 +21,7 @@ const Navbar = ({ user }) => {
 
 	useEffect(() => {
 		dispatch(cartActions.getCartQty());
-	}, []);
+	}, [user]);
 
 	const onCheckEnter = (event) => {
 		if (event.key === 'Enter') {

@@ -12,7 +12,7 @@ const Login = () => {
 	const { user, loginError: error } = useSelector((state) => state.user);
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	console.log(`error`, error)
+
 	useEffect(() => {
 		dispatch({ type: types.ERROR_RESET });
 	}, []);
