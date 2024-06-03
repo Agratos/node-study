@@ -2,6 +2,7 @@ import api from '../utils/api';
 import * as types from '../constants/user.constants';
 import { commonUiActions } from './commonUiAction';
 import * as commonTypes from '../constants/commonUI.constants';
+
 const loginWithToken = () => async (dispatch) => {
 	try {
 		dispatch({ type: types.LOGIN_WITH_TOKEN_REQUEST });
@@ -21,18 +22,16 @@ const loginWithEmail =
 			dispatch({ type: types.LOGIN_REQUEST });
 			const response = await api.post('/auth/login', { email, password });
 
-			if (response.status !== 200) throw new Error(response.error);
-
 			sessionStorage.setItem('token', response.data.token);
 			dispatch({ type: types.LOGIN_SUCCESS, payload: response.data });
 		} catch (error) {
-			console.log(`loginWithEmail`, error.error)
 			dispatch({ type: types.LOGIN_FAIL, payload: error.error });
 		}
 	};
 
 const logout = () => async (dispatch) => {
 	dispatch({ type: types.LOGOUT });
+	dispatch({ type: 'RESET_CART' });
 	sessionStorage.clear();
 };
 
@@ -44,8 +43,6 @@ const registerUser =
 		try {
 			dispatch({ type: types.REGISTER_USER_REQUEST });
 			const response = await api.post('/user', { email, name, password });
-
-			if (response.status !== 200) throw new Error(response.error);
 
 			dispatch({ type: types.REGISTER_USER_SUCCESS });
 			dispatch(commonUiActions.showToastMessage('회원가입을 완료 했습니다', 'success'));

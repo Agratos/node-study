@@ -30,7 +30,12 @@ const OrderReceipt = ({ cartList, totalPrice }) => {
 				</div>
 			</div>
 			{location.pathname.includes('/cart') && (
-				<Button variant='dark' className='payment-button' onClick={() => navigate('/payment')}>
+				<Button
+					variant='dark'
+					className='payment-button'
+					onClick={() => navigate('/payment')}
+					disabled={cartList.length === 0}
+				>
 					결제 계속하기
 				</Button>
 			)}

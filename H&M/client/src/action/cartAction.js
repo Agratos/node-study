@@ -10,6 +10,7 @@ const addToCart =
 			if (response.status !== 200) throw new Error(response.error);
 			dispatch({ type: types.ADD_TO_CART_SUCCESS, payload: response.data.cartItemQty });
 			dispatch(commonUiActions.showToastMessage('카트에 상품이 추가했습니다.', 'success'));
+			dispatch(getCartQty());
 		} catch (error) {
 			dispatch({ type: types.ADD_TO_CART_FAIL, payload: error.error });
 			dispatch(commonUiActions.showToastMessage(error.error, 'error'));
@@ -64,6 +65,7 @@ const getCartQty = () => async (dispatch) => {
 		//dispatch(commonUiActions.showToastMessage(error.error, 'error'));
 	}
 }; // 몇개인지 확인 가능
+
 export const cartActions = {
 	addToCart,
 	getCartList,

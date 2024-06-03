@@ -43,6 +43,9 @@ function cartReducer(state = initialState, action) {
 		case types.ADD_TO_CART_FAIL:
 			return { ...state, loading: false, error: payload };
 
+		case 'RESET_CART':
+			return { ...initialState };
+
 		default:
 			return { ...state };
 	}

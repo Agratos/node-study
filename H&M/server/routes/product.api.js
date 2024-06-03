@@ -11,12 +11,7 @@ router.post(
 	productController.createProduct
 );
 router.get('/new-sku', authController.authenticate, authController.checkAdminPermission, productController.getNewSku);
-router.get(
-	'/:id',
-	authController.authenticate,
-	authController.checkAdminPermission,
-	productController.getProductDetail
-);
+router.get('/:id', productController.getProductDetail);
 router.get('/', productController.getProducts);
 
 router.put('/:id', authController.authenticate, authController.checkAdminPermission, productController.updateProduct);

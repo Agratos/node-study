@@ -29,7 +29,7 @@ const CartProductCard = ({ item }) => {
 					<div className='display-flex space-between'>
 						<h3>{item.productId.name}</h3>
 						<button className='trash-button'>
-							<FontAwesomeIcon icon={faTrash} width={24} onClick={() => deleteCart(item.productId._id)} />
+							<FontAwesomeIcon icon={faTrash} width={24} onClick={() => deleteCart(item._id)} />
 						</button>
 					</div>
 

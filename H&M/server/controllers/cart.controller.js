@@ -56,12 +56,7 @@ cartController.deleteCart = async (req, res) => {
 	try {
 		const { userId } = req;
 		const cartItemId = req.params.id;
-		console.log(cartItemId);
-		const cart = await Cart.findOneAndUpdate(
-			{ userId },
-			{ $pull: { items: { productId: cartItemId } } },
-			{ new: true }
-		);
+		const cart = await Cart.findOneAndUpdate({ userId }, { $pull: { items: { _id: cartItemId } } }, { new: true });
 
 		if (!cart) throw new Error('삭제 할 수 없습니다.');
 
@@ -94,7 +89,7 @@ cartController.getCartItemCount = async (req, res) => {
 	try {
 		const { userId } = req;
 		const cart = await Cart.findOne({ userId });
-		console.log(cart.items.length);
+
 		return res.status(200).json({ status: 'success', data: cart.items.length });
 	} catch (error) {
 		res.status(400).json({ status: 'fail', error: error.message });

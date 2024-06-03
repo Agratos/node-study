@@ -73,7 +73,7 @@ const ProductDetail = () => {
 						<Dropdown.Menu className='size-drop-down'>
 							{Object.entries(product?.stock || {})?.map((item) => (
 								<Dropdown.Item eventKey={item[0]} key={item[0]} disabled={item[1] === 0}>
-									{item[0]}
+									{item[0].toUpperCase()}
 								</Dropdown.Item>
 							))}
 						</Dropdown.Menu>
