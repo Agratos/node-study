@@ -134,7 +134,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, searchQuery }) => {
 					};
 
 					const newSkuData = await getNewSku();
-					console.log(`newSkuData: `, newSkuData);
+
 					if (newSkuData) {
 						setFormData({ ...InitialFormData, sku: newSkuData });
 					} else {
@@ -237,7 +237,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, searchQuery }) => {
 										onChange={(event) => handleStockChange(event.target.value, index)}
 										type='number'
 										placeholder='number of stock'
-										value={item[1] ?? null}
+										value={item[1] ?? ''}
 										required
 									/>
 								</Col>

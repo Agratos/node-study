@@ -7,7 +7,7 @@ const loginWithToken = () => async (dispatch) => {
 	try {
 		dispatch({ type: types.LOGIN_WITH_TOKEN_REQUEST });
 		const response = await api.get('/user/me');
-		if (response.status !== 200) throw new Error(response.error);
+
 		dispatch({ type: types.LOGIN_WITH_TOKEN_SUCCESS, payload: response.data });
 	} catch (error) {
 		dispatch({ type: types.LOGIN_WITH_TOKEN_FAIL, payload: error.error });
@@ -35,14 +35,23 @@ const logout = () => async (dispatch) => {
 	sessionStorage.clear();
 };
 
-const loginWithGoogle = (token) => async (dispatch) => {};
+const loginWithGoogle = (token) => async (dispatch) => {
+	try {
+		dispatch({ type: types.GOOGLE_LOGIN_REQUEST });
+		const response = await api.post('/auth/google', { token });
+
+		dispatch({ type: types.GOOGLE_LOGIN_SUCCESS, payload: response.data });
+	} catch (error) {
+		dispatch({ type: types.GOOGLE_LOGIN_FAIL, payload: error.error });
+	}
+};
 
 const registerUser =
 	({ email, name, password }, navigate) =>
 	async (dispatch) => {
 		try {
 			dispatch({ type: types.REGISTER_USER_REQUEST });
-			const response = await api.post('/user', { email, name, password });
+			await api.post('/user', { email, name, password });
 
 			dispatch({ type: types.REGISTER_USER_SUCCESS });
 			dispatch(commonUiActions.showToastMessage('회원가입을 완료 했습니다', 'success'));
@@ -52,6 +61,7 @@ const registerUser =
 			dispatch(commonUiActions.showToastMessage(error.error, 'error'));
 		}
 	};
+
 export const userActions = {
 	loginWithToken,
 	loginWithEmail,

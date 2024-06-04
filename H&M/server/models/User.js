@@ -9,7 +9,7 @@ const userSchema = Schema(
 		email: { type: String, required: true, unique: true },
 		password: { type: String, required: true },
 		name: { type: String, required: true },
-		level: { type: String, default: 'admin' }, //customer
+		level: { type: String, default: 'customer' }, //admin
 	},
 	{
 		timestamp: true,
@@ -27,7 +27,7 @@ userSchema.methods.toJSON = function () {
 };
 
 userSchema.methods.generateToken = async function () {
-	const token = await jwt.sign({ _id: this._id }, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
+	const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
 	return token;
 };
 
