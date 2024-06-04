@@ -2,6 +2,7 @@ const { populate } = require('dotenv');
 const Order = require('../models/Order');
 const productController = require('./product.controller');
 const { randomStringGenerator } = require('../utils/randomStringGenerator');
+const User = require('../models/User');
 const orderController = {};
 
 orderController.createOrder = async (req, res) => {
@@ -33,12 +34,60 @@ orderController.createOrder = async (req, res) => {
 	}
 };
 
-orderController.getOrderList = async (req, res) => {
+orderController.getMyOrder = async (req, res) => {
 	try {
 		const userId = req.userId;
 		const orderList = await Order.find({ userId }).populate(`items.productId`);
 
 		res.status(200).json({ status: 'success', orderList: orderList });
+	} catch (error) {
+		res.status(400).json({ status: 'fail', error: error.message });
+	}
+};
+
+orderController.getOrderList = async (req, res) => {
+	try {
+		const { page, ordernum, pageSize = 1 } = req.query;
+		const condition = {
+			...(ordernum && { orderNum: { $regex: ordernum, $options: 'i' } }),
+		};
+
+		const query = Order.find(condition).populate(`items.productId`).populate({
+			path: 'userId',
+			select: 'email',
+		});
+
+		let response = { status: 'success' };
+		if (page) {
+			// limit 몇개를 보낼지
+			// skip 몇개를 건더뛰고 보여줄건지
+			query.skip((page - 1) * pageSize).limit(pageSize);
+
+			// 최종 몇개 페이지인지
+			const totalItemNum = await Order.find(condition).count();
+			const totalPageNum = Math.ceil(totalItemNum / pageSize);
+			response.totalPageNum = totalPageNum;
+		}
+
+		const orderList = await query.exec();
+		response.data = orderList;
+
+		res.status(200).json(response);
+	} catch (error) {
+		res.status(400).json({ status: 'fail', error: error.message });
+	}
+};
+
+orderController.updateOrder = async (req, res) => {
+	try {
+		const orderId = req.params.id;
+		const userId = req.userId;
+		//const { level } = await User.findById(userId);
+		const { status } = req.body;
+		console.log(status);
+		await Order.findByIdAndUpdate({ _id: orderId }, { status }, { new: true });
+
+		res.status(200).json({ status: 'success' });
 	} catch (error) {
 		res.status(400).json({ status: 'fail', error: error.message });
 	}
