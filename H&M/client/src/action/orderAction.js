@@ -48,7 +48,6 @@ const updateOrder =
 		try {
 			dispatch({ type: types.UPDATE_ORDER_REQUEST });
 			await api.put(`/order/${id}`, { status });
-			console.log(level);
 			dispatch({ type: types.UPDATE_ORDER_SUCCESS });
 			if (level === 'admin') {
 				dispatch(commonUiActions.showToastMessage('주문 변경 완료', 'success'));

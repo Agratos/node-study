@@ -32,6 +32,7 @@ const loginWithEmail =
 const logout = () => async (dispatch) => {
 	dispatch({ type: types.LOGOUT });
 	dispatch({ type: 'RESET_CART' });
+	dispatch({ type: 'RESET_ORDER' });
 	sessionStorage.clear();
 };
 
@@ -40,6 +41,7 @@ const loginWithGoogle = (token) => async (dispatch) => {
 		dispatch({ type: types.GOOGLE_LOGIN_REQUEST });
 		const response = await api.post('/auth/google', { token });
 
+		sessionStorage.setItem('token', response.data.token);
 		dispatch({ type: types.GOOGLE_LOGIN_SUCCESS, payload: response.data });
 	} catch (error) {
 		dispatch({ type: types.GOOGLE_LOGIN_FAIL, payload: error.error });

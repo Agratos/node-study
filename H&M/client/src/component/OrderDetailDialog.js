@@ -11,7 +11,7 @@ const OrderDetailDialog = ({ open, handleClose, searchQuery, level }) => {
 	const selectedOrder = useSelector((state) => state.order.selectedOrder);
 	const [orderStatus, setOrderStatus] = useState(selectedOrder.status);
 	const dispatch = useDispatch();
-	console.log(selectedOrder);
+
 	const handleStatusChange = (event) => {
 		setOrderStatus(event.target.value);
 	};

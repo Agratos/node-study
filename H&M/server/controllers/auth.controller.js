@@ -68,6 +68,7 @@ authController.authenticate = async (req, res, next) => {
 
 		if (!tokenString) throw new Error('토큰이 없습니다.');
 		const token = tokenString.replace('Bearer ', '');
+
 		jwt.verify(token, process.env.JWT_SECRET_KEY, (error, payload) => {
 			if (error) throw new Error('토큰이 유효하지 않습니다.');
 			req.userId = payload._id;
