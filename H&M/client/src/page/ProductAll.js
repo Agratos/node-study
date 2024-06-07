@@ -41,7 +41,7 @@ const ProductAll = () => {
 		}
 
 		dispatch(productActions.getProductList({ ...searchQuery }));
-	}, [query, searchQuery, navigate, dispatch]);
+	}, [searchQuery, navigate, dispatch]);
 
 	const handlePageClick = ({ selected }) => {
 		setSearchQuery((prev) => ({ ...prev, page: selected + 1 }));
