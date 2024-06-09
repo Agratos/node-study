@@ -10,6 +10,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { commonUiActions } from '../action/commonUiAction';
 import ProductTable from '../component/ProductTable';
 import LoadingSpinner from '../component/LoadingSpinner';
+import DeleteDialog from '../component/DeleteDialog';
 
 const AdminProduct = () => {
 	const navigate = useNavigate();
@@ -17,6 +18,8 @@ const AdminProduct = () => {
 	const dispatch = useDispatch();
 	const { productList, totalPageNum, loading } = useSelector((state) => state.product);
 	const [showDialog, setShowDialog] = useState(false);
+	const [deleteDialog, setDeleteDialog] = useState(false);
+	const [deleteId, setDeleteId] = useState(null);
 	const [searchQuery, setSearchQuery] = useState({
 		pageSize: 5,
 		page: query.get('page') || 1,
@@ -44,10 +47,17 @@ const AdminProduct = () => {
 		navigate(`?` + query);
 	}, [searchQuery]);
 
-	const deleteItem = (id) => {
+	const deleteItem = (id, sku) => {
 		//아이템 삭제하기
-		dispatch(productActions.deleteProduct(id, { ...searchQuery }));
+		setDeleteId({id, sku});
+		setDeleteDialog(true);
+		//dispatch(productActions.deleteProduct(id, { ...searchQuery }));
 	};
+
+	const deleteStock = () => {
+		dispatch(productActions.deleteProduct(deleteId?.id, { ...searchQuery }))
+		setDeleteDialog(false);
+	}
 
 	const openEditForm = (product) => {
 		//edit모드로 설정하고
@@ -120,6 +130,12 @@ const AdminProduct = () => {
 				showDialog={showDialog}
 				setShowDialog={setShowDialog}
 				searchQuery={searchQuery}
+			/>
+			<DeleteDialog 
+				sku={deleteId?.sku}
+				showDialog={deleteDialog}
+				setShowDialog={setDeleteDialog}
+				deleteStock={deleteStock}
 			/>
 		</div>
 	);
