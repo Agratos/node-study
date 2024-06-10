@@ -266,3 +266,10 @@ body {
 	align-items: center;
 	flex-direction: column;
 }
+
+.sale-strike {
+	position: relative;
+	display: inline-block;
+	text-decoration: line-through;
+	text-decoration-color: red;
+}

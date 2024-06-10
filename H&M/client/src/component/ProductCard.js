@@ -13,7 +13,11 @@ const ProductCard = ({ item }) => {
 		<div className='card' onClick={() => showProduct(item._id)}>
 			<img src={item.image} alt='' />
 			<div>{item.name}</div>
-			<div>{item.price}</div>
+			<div style={{ display: 'flex' }}>
+				<div className='sale-strike'>{item.price}</div>
+				<div style={{ margin: '0 4px' }}>{'>'}</div>
+				<div>{item.price * 0.6}</div>
+			</div>
 		</div>
 	);
 };

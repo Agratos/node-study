@@ -32,7 +32,7 @@ const OrderTable = ({ header, data, openEditForm }) => {
 
 								<th>{item.shipTo.address + ' ' + item.shipTo.city}</th>
 
-								<th>{currencyFormat(item.totalPrice)}</th>
+								<th>{currencyFormat(item.totalPrice * 0.6)}</th>
 								<th>
 									<Badge bg={badgeBg[item.status]}>{item.status}</Badge>
 								</th>

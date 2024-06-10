@@ -7,6 +7,8 @@ import { productActions } from '../action/productAction';
 import { commonUiActions } from '../action/commonUiAction';
 import ReactPaginate from 'react-paginate';
 import LoadingSpinner from '../component/LoadingSpinner';
+import PopupCard from '../component/PopupCard';
+import Banner from '../component/Banner/Banner';
 
 const ProductAll = () => {
 	const navigate = useNavigate();
@@ -14,11 +16,18 @@ const ProductAll = () => {
 	const [query, setQuery] = useSearchParams();
 	const error = useSelector((state) => state.product.error);
 	const { productList, totalPageNum, loading } = useSelector((state) => state.product);
+	const { myOrder } = useSelector((state) => state.order);
+	const [isPopup, setIsPopup] = useState(false);
 	const [searchQuery, setSearchQuery] = useState({
 		pageSize: 4,
 		page: query.get('page') || 1,
 		name: query.get('name') || '',
 	});
+
+	useEffect(() => {
+		console.log(myOrder);
+		myOrder.length === 0 && setIsPopup(true);
+	}, [myOrder]);
 
 	useEffect(() => {
 		setSearchQuery((prev) => ({
@@ -49,6 +58,8 @@ const ProductAll = () => {
 
 	return (
 		<Container>
+			<Banner />
+			<div>남성</div>
 			<LoadingSpinner loading={loading}>
 				<Row>
 					{productList?.map((item, index) => (
@@ -79,6 +90,7 @@ const ProductAll = () => {
 					activeClassName='active'
 				/>
 			)}
+			<PopupCard showPopup={isPopup} setShowPopup={setIsPopup} />
 		</Container>
 	);
 };

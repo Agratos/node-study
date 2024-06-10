@@ -37,7 +37,14 @@ const CartProductCard = ({ item }) => {
 						<strong>₩ {currencyFormat(item.productId.price)}</strong>
 					</div>
 					<div>Size: {item.size.toUpperCase()}</div>
-					<div>Total: ₩ {currencyFormat(item.productId.price * item.qty)}</div>
+					<div style={{ display: 'flex' }}>
+						Total: ₩{' '}
+						<div className='sale-strike' style={{ marginRight: '4px' }}>
+							{currencyFormat(item.productId.price * item.qty)}
+						</div>
+						{'>'}
+						<div style={{ marginLeft: '4px' }}>{currencyFormat(item.productId.price * item.qty * 0.6)}</div>
+					</div>
 					<div>
 						Quantity:
 						<Form.Select

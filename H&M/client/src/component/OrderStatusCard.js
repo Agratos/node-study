@@ -20,7 +20,7 @@ const OrderStatusCard = ({ order, setOpen }) => {
 					<div>
 						{order?.items[0].productId.name}외 {order?.items.length}개
 					</div>
-					<div>₩ {currencyFormat(order?.totalPrice)}</div>
+					<div>₩ {currencyFormat(order?.totalPrice * 0.6)}</div>
 				</Col>
 				<Col md={2} className='vertical-middle'>
 					<div className='text-align-center text-12'>주문상태</div>

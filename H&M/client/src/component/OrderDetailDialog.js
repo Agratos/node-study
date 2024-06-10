@@ -27,7 +27,7 @@ const OrderDetailDialog = ({ open, handleClose, searchQuery, level }) => {
 	if (!selectedOrder) {
 		return <></>;
 	}
-
+	console.log(selectedOrder);
 	return (
 		<Modal show={open} onHide={handleClose}>
 			<Modal.Header closeButton>
@@ -62,14 +62,14 @@ const OrderDetailDialog = ({ open, handleClose, searchQuery, level }) => {
 									<tr key={item._id}>
 										<td>{item._id}</td>
 										<td>{item.productId.name}</td>
-										<td>{currencyFormat(item.price)}</td>
+										<td>{currencyFormat(item.price * 0.6)}</td>
 										<td>{item.qty}</td>
-										<td>{currencyFormat(item.price * item.qty)}</td>
+										<td>{currencyFormat(item.price * item.qty * 0.6)}</td>
 									</tr>
 								))}
 							<tr>
 								<td colSpan={4}>총계:</td>
-								<td>{currencyFormat(selectedOrder.totalPrice)}</td>
+								<td>{currencyFormat(selectedOrder.totalPrice * 0.6)}</td>
 							</tr>
 						</tbody>
 					</Table>
@@ -87,7 +87,8 @@ const OrderDetailDialog = ({ open, handleClose, searchQuery, level }) => {
 					</Form.Group>
 					{level === 'custom' && !['preparing', 'refund'].includes(orderStatus) && (
 						<div style={{ textAlign: 'center', color: 'red', fontSize: '14px', marginTop: '16px' }}>
-							상품이 배송중입니다. 환불은 관리자에게 문의하세요
+							{orderStatus === 'shipping' ? '상품이 배송중입니다. ' : '상품이 배송완료되었습니다. '}
+							환불은 관리자에게 문의하세요
 						</div>
 					)}
 					{orderStatus === 'refund' && (

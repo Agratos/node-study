@@ -17,7 +17,6 @@ const MyPage = () => {
 	useEffect(() => {
 		dispatch(orderActions.getMyOrder());
 	}, []);
-	// 오더리스트가 없다면? 주문한 상품이 없습니다 메세지 보여주기
 
 	const openEditForm = (order) => {
 		setOpen(true);

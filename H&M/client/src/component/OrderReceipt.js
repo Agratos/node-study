@@ -16,7 +16,13 @@ const OrderReceipt = ({ cartList, totalPrice }) => {
 					<li key={item._id}>
 						<div className='display-flex space-between'>
 							<div>{item.productId.name}</div>
-							<div>₩ {currencyFormat(item.productId.price)}</div>
+							<div>
+								₩{' '}
+								<label className='sale-strike'>{currencyFormat(item.productId.price * item.qty)}</label>
+							</div>
+						</div>
+						<div className='display-flex space-between'>
+							<div></div>₩ {currencyFormat(item.productId.price * item.qty * 0.6)}
 						</div>
 					</li>
 				))}
@@ -26,7 +32,15 @@ const OrderReceipt = ({ cartList, totalPrice }) => {
 					<strong>Total:</strong>
 				</div>
 				<div>
-					<strong>₩ {currencyFormat(totalPrice)}</strong>
+					<strong>
+						₩ <label className='sale-strike'>{currencyFormat(totalPrice)}</label>
+					</strong>
+				</div>
+			</div>
+			<div className='display-flex space-between receipt-title'>
+				<div></div>
+				<div>
+					<strong>₩ {currencyFormat(totalPrice * 0.6)}</strong>
 				</div>
 			</div>
 			{location.pathname.includes('/cart') && (
