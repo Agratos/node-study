@@ -27,7 +27,7 @@ const OrderDetailDialog = ({ open, handleClose, searchQuery, level }) => {
 	if (!selectedOrder) {
 		return <></>;
 	}
-	console.log(selectedOrder);
+
 	return (
 		<Modal show={open} onHide={handleClose}>
 			<Modal.Header closeButton>

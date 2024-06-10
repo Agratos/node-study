@@ -59,7 +59,6 @@ const ProductAll = () => {
 	return (
 		<Container>
 			<Banner />
-			<div>남성</div>
 			<LoadingSpinner loading={loading}>
 				<Row>
 					{productList?.map((item, index) => (

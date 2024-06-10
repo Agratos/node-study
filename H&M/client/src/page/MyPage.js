@@ -30,7 +30,10 @@ const MyPage = () => {
 	return (
 		<Container className='status-card-container'>
 			{myOrder.length !== 0 ? (
-				myOrder?.map((order) => <OrderStatusCard order={order} setOpen={openEditForm} key={order._id} />)
+				myOrder
+					?.slice()
+					.reverse()
+					.map((order) => <OrderStatusCard order={order} setOpen={openEditForm} key={order._id} />)
 			) : (
 				<Container className='confirmation-page'>
 					<h2>주문하신 상품이 없습니다.</h2>

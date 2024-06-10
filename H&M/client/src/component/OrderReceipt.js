@@ -33,7 +33,12 @@ const OrderReceipt = ({ cartList, totalPrice }) => {
 				</div>
 				<div>
 					<strong>
-						₩ <label className='sale-strike'>{currencyFormat(totalPrice)}</label>
+						₩{' '}
+						{cartList.length !== 0 ? (
+							<label className='sale-strike'>{currencyFormat(totalPrice)}</label>
+						) : (
+							0
+						)}
 					</strong>
 				</div>
 			</div>
