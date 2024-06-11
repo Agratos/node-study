@@ -70,9 +70,9 @@ cartController.updateCart = async (req, res) => {
 	try {
 		const { userId } = req;
 		const cartItemId = req.params.id;
-		const { qty } = req.body;
+		const { qty, size } = req.body;
 		const cart = await Cart.findOneAndUpdate(
-			{ userId, 'items.productId': cartItemId }, // 찾을 조건
+			{ userId, 'items.productId': cartItemId, 'items.size': size }, // 찾을 조건
 			{ $set: { 'items.$.qty': qty } }, // 업데이트 조건
 			{ new: true }
 		);

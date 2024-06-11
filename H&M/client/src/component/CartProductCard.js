@@ -9,9 +9,9 @@ import { currencyFormat } from '../utils/number';
 const CartProductCard = ({ item }) => {
 	const dispatch = useDispatch();
 
-	const handleQtyChange = (id, qty) => {
+	const handleQtyChange = (id, size, qty) => {
 		//아이템 수량을 수정한다
-		dispatch(cartActions.updateQty(id, qty));
+		dispatch(cartActions.updateQty(id, size, qty));
 	};
 
 	const deleteCart = (id) => {
@@ -48,7 +48,7 @@ const CartProductCard = ({ item }) => {
 					<div>
 						Quantity:
 						<Form.Select
-							onChange={(event) => handleQtyChange(item.productId._id, event.target.value)}
+							onChange={(event) => handleQtyChange(item.productId._id, item.size, event.target.value)}
 							required
 							defaultValue={item.qty}
 							className='qty-dropdown'

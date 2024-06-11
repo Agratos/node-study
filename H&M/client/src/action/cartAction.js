@@ -42,10 +42,10 @@ const deleteCartItem = (id) => async (dispatch) => {
 	}
 };
 
-const updateQty = (id, value) => async (dispatch) => {
+const updateQty = (id, size, value) => async (dispatch) => {
 	try {
 		dispatch({ type: types.UPDATE_CART_ITEM_REQUEST });
-		const response = await api.put(`/cart/${id}`, { qty: value });
+		const response = await api.put(`/cart/${id}`, { qty: value, size });
 		if (response.status !== 200) throw new Error(response.error);
 		dispatch({ type: types.UPDATE_CART_ITEM_SUCCESS });
 		dispatch(getCartList());
