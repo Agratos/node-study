@@ -87,7 +87,7 @@ orderController.updateOrder = async (req, res) => {
 		const userId = req.userId;
 		//const { level } = await User.findById(userId);
 		const { status } = req.body;
-		console.log(status);
+
 		await Order.findByIdAndUpdate({ _id: orderId }, { status }, { new: true });
 
 		res.status(200).json({ status: 'success' });

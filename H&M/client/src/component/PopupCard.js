@@ -3,8 +3,8 @@ import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 const PopupCard = ({ showPopup, setShowPopup }) => {
 	return (
-		<Modal show={showPopup} onHide={() => setShowPopup(false)} centered>
-			<Modal.Body className='text-center' onClick={() => setShowPopup(false)}>
+		<Modal show={showPopup} onHide={setShowPopup} centered>
+			<Modal.Body className='text-center' onClick={setShowPopup}>
 				<img src={'/image/sale.jpg'} width={'100%'} />
 			</Modal.Body>
 		</Modal>

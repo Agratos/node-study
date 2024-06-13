@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import { faBars, faBox, faSearch, faShoppingBag } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faBox, faSearch, faShoppingBag, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ const Navbar = ({ user }) => {
 	const { cartItemCount } = useSelector((state) => state.cart);
 	const isMobile = window.navigator.userAgent.indexOf('Mobile') !== -1;
 	const [showSearchBox, setShowSearchBox] = useState(false);
-	const menuList = ['여성', 'Divided', '남성', '신생아/유아', '아동', 'H&M HOME', 'Sale', '지속가능성'];
+	const menuList = []; //['여성', 'Divided', '남성', '신생아/유아', '아동', 'H&M HOME', 'Sale', '지속가능성'];
 	let [width, setWidth] = useState(0);
 
 	let navigate = useNavigate();
@@ -33,6 +33,7 @@ const Navbar = ({ user }) => {
 
 	const logout = () => {
 		dispatch(userActions.logout());
+		dispatch({ type: 'SET_FIRST_MAIN', payload: true });
 	};
 
 	return (
@@ -91,6 +92,10 @@ const Navbar = ({ user }) => {
 						<div onClick={() => navigate('/account/purchase')} className='nav-icon'>
 							<FontAwesomeIcon icon={faBox} />
 							{!isMobile && <span style={{ cursor: 'pointer' }}>내 주문</span>}
+						</div>
+						<div onClick={() => navigate('/favorite')} className='nav-icon'>
+							<FontAwesomeIcon icon={faStar} />
+							{!isMobile && <span style={{ cursor: 'pointer' }}>찜 목록</span>}
 						</div>
 						{isMobile && (
 							<div className='nav-icon' onClick={() => setShowSearchBox(true)}>

@@ -8,6 +8,7 @@ import { cartActions } from '../action/cartAction';
 import { commonUiActions } from '../action/commonUiAction';
 import { currencyFormat } from '../utils/number';
 import '../style/productDetail.style.css';
+import { favoritAction } from '../action/favoriteAction';
 
 const ProductDetail = () => {
 	const dispatch = useDispatch();
@@ -16,6 +17,8 @@ const ProductDetail = () => {
 	const { id } = useParams();
 	const [sizeError, setSizeError] = useState(false);
 	const product = useSelector((state) => state.product.productDetail);
+	const { myFavorite } = useSelector((state) => state.favorite);
+	const token = sessionStorage.getItem('token');
 
 	const navigate = useNavigate();
 
@@ -33,9 +36,13 @@ const ProductDetail = () => {
 		setSize(value);
 	};
 
-	//카트에러가 있으면 에러메세지 보여주기
+	const addFavorite = () => {
+		dispatch(favoritAction.updateMyFavorite(id));
+	};
 
-	//에러가 있으면 에러메세지 보여주기
+	const deleteFavorite = () => {
+		dispatch(favoritAction.deleteMyFavorite(id));
+	};
 
 	useEffect(() => {
 		//상품 디테일 정보 가져오기
@@ -85,6 +92,16 @@ const ProductDetail = () => {
 					<Button variant='dark' className='add-button' onClick={addItemToCart}>
 						추가
 					</Button>
+					{token &&
+						(myFavorite?.some((favorite) => favorite?._id === product?._id) ? (
+							<Button variant='warning' className='add-button' onClick={deleteFavorite}>
+								찜취소
+							</Button>
+						) : (
+							<Button variant='success' className='add-button' onClick={addFavorite}>
+								찜하기
+							</Button>
+						))}
 				</Col>
 			</Row>
 		</Container>

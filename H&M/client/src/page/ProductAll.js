@@ -9,15 +9,18 @@ import ReactPaginate from 'react-paginate';
 import LoadingSpinner from '../component/LoadingSpinner';
 import PopupCard from '../component/PopupCard';
 import Banner from '../component/Banner/Banner';
+import { favoritAction } from '../action/favoriteAction';
 
 const ProductAll = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [query, setQuery] = useSearchParams();
 	const error = useSelector((state) => state.product.error);
+	const { isFirst } = useSelector((state) => state.banner);
 	const { productList, totalPageNum, loading } = useSelector((state) => state.product);
+	const { myFavorite } = useSelector((state) => state.favorite);
 	const { myOrder } = useSelector((state) => state.order);
-	const [isPopup, setIsPopup] = useState(false);
+	const [isPopup, setIsPopup] = useState(isFirst);
 	const [searchQuery, setSearchQuery] = useState({
 		pageSize: 4,
 		page: query.get('page') || 1,
@@ -25,9 +28,12 @@ const ProductAll = () => {
 	});
 
 	useEffect(() => {
-		console.log(myOrder);
-		myOrder.length === 0 && setIsPopup(true);
-	}, [myOrder]);
+		dispatch(favoritAction.getMyFavorite());
+	}, []);
+
+	useEffect(() => {
+		setIsPopup(isFirst);
+	}, [isFirst]);
 
 	useEffect(() => {
 		setSearchQuery((prev) => ({
@@ -56,6 +62,11 @@ const ProductAll = () => {
 		setSearchQuery((prev) => ({ ...prev, page: selected + 1 }));
 	};
 
+	const handlePopupClose = () => {
+		setIsPopup(false);
+		dispatch({ type: 'SET_FIRST_MAIN', payload: false });
+	};
+
 	return (
 		<Container>
 			<Banner />
@@ -63,7 +74,10 @@ const ProductAll = () => {
 				<Row>
 					{productList?.map((item, index) => (
 						<Col md={3} sm={12} key={item.name + index}>
-							<ProductCard item={item} />
+							<ProductCard
+								item={item}
+								favorite={myFavorite?.some((favorite) => favorite._id === item._id)}
+							/>
 						</Col>
 					))}
 				</Row>
@@ -89,7 +103,7 @@ const ProductAll = () => {
 					activeClassName='active'
 				/>
 			)}
-			<PopupCard showPopup={isPopup} setShowPopup={setIsPopup} />
+			<PopupCard showPopup={isPopup} setShowPopup={handlePopupClose} />
 		</Container>
 	);
 };

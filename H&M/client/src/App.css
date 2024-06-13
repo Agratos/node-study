@@ -273,3 +273,9 @@ body {
 	text-decoration: line-through;
 	text-decoration-color: red;
 }
+
+.favorite-icon {
+	position: absolute;
+	margin-top: 16px;
+	right: 16px;
+}
