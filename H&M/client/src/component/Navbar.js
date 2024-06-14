@@ -85,15 +85,15 @@ const Navbar = ({ user }) => {
 								{!isMobile && <span style={{ cursor: 'pointer' }}>로그인</span>}
 							</div>
 						)}
-						<div onClick={() => navigate('/cart')} className='nav-icon'>
+						<div onClick={() => navigate(user ? '/cart' : '/login')} className='nav-icon'>
 							<FontAwesomeIcon icon={faShoppingBag} />
 							{!isMobile && <span style={{ cursor: 'pointer' }}>{`쇼핑백(${cartItemCount || 0})`}</span>}
 						</div>
-						<div onClick={() => navigate('/account/purchase')} className='nav-icon'>
+						<div onClick={() => navigate(user ? '/account/purchase' : '/login')} className='nav-icon'>
 							<FontAwesomeIcon icon={faBox} />
 							{!isMobile && <span style={{ cursor: 'pointer' }}>내 주문</span>}
 						</div>
-						<div onClick={() => navigate('/favorite')} className='nav-icon'>
+						<div onClick={() => navigate(user ? '/favorite' : '/login')} className='nav-icon'>
 							<FontAwesomeIcon icon={faStar} />
 							{!isMobile && <span style={{ cursor: 'pointer' }}>찜 목록</span>}
 						</div>
