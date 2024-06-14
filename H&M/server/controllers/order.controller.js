@@ -1,11 +1,13 @@
-const { populate } = require('dotenv');
+const mongoose = require('mongoose');
 const Order = require('../models/Order');
 const productController = require('./product.controller');
 const { randomStringGenerator } = require('../utils/randomStringGenerator');
-const User = require('../models/User');
 const orderController = {};
 
 orderController.createOrder = async (req, res) => {
+	// const session = await mongoose.startSession(); // 트랜잭션 여러가지의 일처리를 한개의 단위로 모두 성공해야 저장
+	// session.startTransaction();
+
 	try {
 		const { userId } = req;
 		const { shipTo, contact, totalPrice, orderList } = req.body;
@@ -17,6 +19,8 @@ orderController.createOrder = async (req, res) => {
 			throw new Error(errorMessage);
 		}
 
+		await productController.deductItemStock(orderList);
+
 		const newOrder = new Order({
 			userId,
 			totalPrice,
@@ -27,9 +31,13 @@ orderController.createOrder = async (req, res) => {
 		});
 
 		await newOrder.save();
+		// await session.commitTransaction();
+		// session.endSession();
 		// save 후에 카트를 비워주자
 		res.status(200).json({ status: 'success', orderNum: newOrder.orderNum });
 	} catch (error) {
+		// await session.abortTransaction();
+		// session.endSession();
 		res.status(400).json({ status: 'fail', error: error.message });
 	}
 };
